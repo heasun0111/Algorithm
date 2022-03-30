@@ -1,32 +1,34 @@
 from collections import Counter
 
+#빈도에 따라서 정렬하는 함수
 def frequency_sort(data):
     rt_data = []
-    for i in data:
-        tmp=data[i]
-        for d, c in Counter(tmp).most_common():
-            rt_data.append(d)
-        return rt_data
+    for d, c in Counter(data).most_common():
+        rt_data.append(d)
+    return rt_data
 
 
 def solution(s):
-    s=set(s)
-    l1 = list(s)
-    data=[]
-    for i in len(l1):
-        data.append(list(l1[i]))
-    answer=frequency_sort(data)
+    tmp=[]
+    for i in range(len(s)):
+        flag=True
+        if s[i]=='{':
+            flag=False
+        elif s[i]=='}':
+            flag=False
+
+        if flag==True:
+            tmp.append(s[i])
+
+    tmp="".join(tmp)
+    tmp=tmp.split(",")
+    tmp=list(map(int,tmp))
+
+    answer=frequency_sort(tmp)
     return answer
 
-#print(solution("{{2},{2,1},{2,1,3},{2,1,3,4}}"))
-#print(solution("{{1,2,3},{2,1},{1,2,4,3},{2}}"))
-#print(solution("{{20,111},{111}}"))
-#print(solution("{{123}}"))
-#print(solution("{{4,2,3},{3},{2,3,4,1},{2,3}}"))
-
-a=list("{{4,2,3},{3},{2,3,4,1},{2,3}}")
-result="".join(a)
-print(result)
+# 매일 한 문제씩 풀기!!
+# 좀 더 간결하게 고치기
 
 #자료형 변환
 #문자열을 딱 변하는건 없고
