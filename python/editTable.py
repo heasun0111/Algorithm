@@ -1,3 +1,5 @@
+#링크드 리스트 or deque 이용해서 다시 풀기!
+
 def solution(n, k, cmd):
     stk=[]
     #range()함수 사용 후 list
