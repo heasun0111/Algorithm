@@ -1,6 +1,6 @@
 from collections import deque
 # x랑 y 순서 헷갈리지 말기!
-# 처음과 끝에서 index에러 뜨는듯;;
+# index에러!!
 
 N=int(input())
 
@@ -27,7 +27,7 @@ idx_d=0
 cnt=0
 snake.append([H_x,H_y])
 flag=True
-while(flag==True):
+while flag==True:
     #뱀 머리 방향
     if len(dir)>0:
         tmp_dir=dir[0]
@@ -38,9 +38,17 @@ while(flag==True):
                 idx_d = idx_d - 1
             dir.popleft()
 
-    cnt=cnt+1
+    # 여기서 index에러!
+    # idx_d 범위 넘어가는지 확인하기!
+    if idx_d>3:
+        idx_d=idx_d%4
+    if idx_d<0:
+        idx_d=idx_d+4
+
     H_x=H_x+dx[idx_d]
     H_y=H_y+dy[idx_d]
+
+    cnt=cnt + 1
 
     #외곽에 쿵
     if H_x<1 or H_x>N or H_y<1 or H_y>N:
@@ -71,7 +79,4 @@ while(flag==True):
         continue
 
 print(cnt)
-
-
-
 
