@@ -1,6 +1,9 @@
 # 거리 및 조건을 파악해서 먹을 물고기 탐색 -> 없으면 끝낸다
 # 상어부터 물고기까지 거리를 구하는 부분
 # 상어가 먹은 물고기 개수
+
+# 장애물 고려하지 않고 거리를 구함 -> visited 이용!!
+
 from collections import deque
 
 q=deque()
@@ -12,31 +15,21 @@ eat_fish=0
 
 # x,y 좌표 헷갈리지 않기!
 # 물고기 좌표 찾기
-def findFish(shark_w, sea, shk_x, shk_y):
+def findFish(shark_w, sea):
     fish = []
-    for i in range(N):
-        for j in range(N):
+    for j in range(N):
+        for i in range(N):
             if sea[j][i]<shark_w and sea[j][i]!=0:
                 fish.append([j,i])
 
     if len(fish)==0:
         return 0
     else:
-        min = 40001
-        min_x=-1
-        min_y=-1
-        fish.sort(key=lambda x:(x[0], x[1]))
-        for tmp in fish:
-            dis=abs(shk_y-tmp[0])+abs(shk_x-tmp[1])
-            if dis<min:
-                min=dis
-                min_x=tmp[1]
-                min_y=tmp[0]
-        return [min_x, min_y]
+        return fish
 
 
 # 상어&물고기 좌표를 주면 최소 이동 경로 구하는 거
-def bfs(shk_x, shk_y, fish_x, fish_y, shark_w):
+def bfs(shk_x, shk_y, fishSpot, shark_w):
     visited=[[0 for _ in range(N)]for _ in range(N)]
     dx=[1,0,-1,0]
     dy=[0,1,0,-1]
@@ -49,7 +42,20 @@ def bfs(shk_x, shk_y, fish_x, fish_y, shark_w):
             if 0<=nx<N and 0<=ny<N and sea[ny][nx]<=shark_w and visited[ny][nx]==0:
                 visited[ny][nx]=visited[d][c]+1
                 q.append([nx,ny])
-    return visited[fish_y][fish_x]
+
+    min=40001
+    min_x=-1
+    min_y=-1
+    # fishSpot에 있는 x,y좌표 헷갈렸었음!
+    for tmp in fishSpot:
+        if min>visited[tmp[0]][tmp[1]]:
+            min=visited[tmp[0]][tmp[1]]
+            min_x=tmp[1]
+            min_y=tmp[0]
+    sea[min_y][min_x]=0
+    shk_x=min_x
+    shk_y=min_y
+    return [min, shk_x, shk_y]
 
 def calTime(sea):
     for n in range(N):
@@ -61,20 +67,19 @@ def calTime(sea):
     global shark_w
     global eat_fish
     #여기서 좌표 실수
-    fishSpot=findFish(shark_w, sea, shk_x, shk_y)
+    fishSpot=findFish(shark_w, sea)
     cnt=0
     while fishSpot!=0:
-        u,v=fishSpot[0],fishSpot[1]
-        cnt=cnt+bfs(shk_x, shk_y,u,v,shark_w)
-        eat_fish=eat_fish+1
-        sea[v][u]=0
+        result=bfs(shk_x, shk_y, fishSpot, shark_w)
+        cnt=cnt+result[0]
         # 상어 좌표 다시 조정
-        shk_x, shk_y = fishSpot[0], fishSpot[1]
+        shk_x, shk_y = result[1], result[2]
+        eat_fish=eat_fish+1
         # 물고기 먹는거 중복 됐었음
         if eat_fish >= shark_w:
             shark_w=shark_w+1
             eat_fish=0
-        fishSpot = findFish(shark_w,sea, shk_x, shk_y)
+        fishSpot = findFish(shark_w,sea)
 
     return cnt
 
