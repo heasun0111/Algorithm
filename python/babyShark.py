@@ -1,9 +1,4 @@
-# 거리 및 조건을 파악해서 먹을 물고기 탐색 -> 없으면 끝낸다
-# 상어부터 물고기까지 거리를 구하는 부분
-# 상어가 먹은 물고기 개수
-
 # 장애물 고려하지 않고 거리를 구함 -> visited 이용!!
-
 from collections import deque
 
 q=deque()
@@ -48,7 +43,8 @@ def bfs(shk_x, shk_y, fishSpot, shark_w):
     min_y=-1
     # fishSpot에 있는 x,y좌표 헷갈렸었음!
     for tmp in fishSpot:
-        if min>visited[tmp[0]][tmp[1]]:
+        #예외 생각! 방문할 수 없는 물고기 카운팅x
+        if visited[tmp[0]][tmp[1]]!=0 and min>visited[tmp[0]][tmp[1]]:
             min=visited[tmp[0]][tmp[1]]
             min_x=tmp[1]
             min_y=tmp[0]
@@ -69,8 +65,16 @@ def calTime(sea):
     #여기서 좌표 실수
     fishSpot=findFish(shark_w, sea)
     cnt=0
-    while fishSpot!=0:
+    flag=True
+    if fishSpot==0:
+        flag=False
+
+    while flag==True:
         result=bfs(shk_x, shk_y, fishSpot, shark_w)
+        if result[0]==40001:
+            flag=False
+            break
+
         cnt=cnt+result[0]
         # 상어 좌표 다시 조정
         shk_x, shk_y = result[1], result[2]
@@ -81,6 +85,18 @@ def calTime(sea):
             eat_fish=0
         fishSpot = findFish(shark_w,sea)
 
+        if fishSpot==0:
+            flag=False
+            break
+
     return cnt
 
 print(calTime(sea))
+
+
+# 내가 실수했던 부분
+# 상어 위치 0으로 바꾸기
+# 갈 수 없는 물고기(visited==0) 먹지 않기
+# 아무것도 못 먹는 경우 무한 루프 -> 시간 초과
+# 좌표 x,y 순서 헷갈리지 말기
+# 물고기 먹는거 코드 중복
