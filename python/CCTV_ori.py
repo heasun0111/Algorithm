@@ -123,3 +123,22 @@ for n in range(N):
 # 라이브러리 쓰지않고 DFS 이용해서 중복조합 구현!!
 for tmp in product(range(4)):
     print(tmp)
+
+    
+'''
+l=[4,4,2,2]
+n=len(l)
+answer=[]
+
+def dfs(idx, list):
+    if len(list)==n:
+        answer.append((list[:]))
+        return
+
+    for i in range(idx,n):
+        dfs(i+1, list+[l[i]])
+
+dfs(0, [])
+
+print(answer)
+'''
