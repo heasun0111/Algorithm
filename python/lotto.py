@@ -11,7 +11,8 @@ def combi(arr, r):
 # 띄어쓰기로 구분된 문자 -> 리스트
 K=list(input().split())
 
-while K[0]!=0:
+# input을 아예 문자열로 받아옴!
+while K[0]!='0':
     arr=K[1:]
     for tmp in combi(arr, 6):
         ans=" ".join(tmp)
@@ -19,4 +20,5 @@ while K[0]!=0:
     print(' ')
     K=list(input().split())
 
-# EOFError 런타임 에러...?
+# EOFError 런타임 에러 -> End Of File Error인데
+# 나는 적절한 때 파일이 종료되지 않아서 생기는 것 같음
