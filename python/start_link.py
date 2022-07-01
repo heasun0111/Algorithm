@@ -15,6 +15,28 @@ def combi(arr, r):
                 yield [arr[i]]+next
 
 # range앞에 list붙이기
+min=10000
 for tmp in combi(list(range(N)), N/2):
-    print(tmp)
+    ability_A=0
+    ability_B=0
+    for a in tmp:
+        for b in tmp:
+            ability_A=ability_A+team[a][b]
+
+    tmp_B=[]
+    for k in range(N):
+        if k not in tmp:
+            tmp_B.append(k)
+        else:
+            continue
+
+    for c in tmp_B:
+        for d in tmp_B:
+            ability_B = ability_B + team[c][d]
+
+    if abs(ability_A-ability_B)<min:
+        min=abs(ability_A-ability_B)
+
+
+print(min)
 
