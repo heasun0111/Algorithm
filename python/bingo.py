@@ -1,15 +1,13 @@
-
 bingo=[list(map(int, input().split())) for _ in range(5)]
 ans=[list(map(int, input().split())) for _ in range(5)]
 
 visited=[[0 for _ in range(5)]for _ in range(5)]
-
 def find_bingo(visited):
     bingo=0
-    for a in range(5):
+    for g in range(5):
         flag=True
-        for b in range(5):
-            if visited[a][b]==0:
+        for h in range(5):
+            if visited[g][h]==0:
                 flag=False
         if flag==True:
             bingo=bingo+1
@@ -22,24 +20,21 @@ def find_bingo(visited):
         if flag==True:
             bingo=bingo+1
 
+    flag=True
     for e in range(5):
-        flag=True
         if visited[e][e]==0:
             flag=False
     if flag == True:
         bingo = bingo + 1
 
+    flag=True
     for f in range(5):
-        flag=True
         if visited[4-f][f]==0:
             flag=False
     if flag == True:
         bingo = bingo + 1
 
     if bingo>=3:
-        print('야옹~~')
-        for z in range(5):
-            print(visited[z])
         return True
     else:
         return False
@@ -52,14 +47,15 @@ def check_bingo(bingo, visited, num):
     return visited
 
 answer=0
-for i in range(5):
-    for j in range(5):
-        answer=answer+1
-        check_bingo(bingo, visited, ans[i][j])
-        if find_bingo(visited)==True:
-            print(answer)
-            break
-            break
-
-
-
+a=0
+b=0
+while a<5:
+    answer=answer+1
+    check_bingo(bingo, visited, ans[a][b])
+    if find_bingo(visited)==True:
+        print(answer)
+        break
+    b=b+1
+    if b==5:
+        a=a+1
+        b=0
